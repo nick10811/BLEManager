@@ -1,7 +1,7 @@
 # BLEManager
 
 ## Descriptions
-This project is bluetooth 4.0 lib for iOS.
+This is a library of Bluetooth 4.0 which based on iOS. It makes you easy to implement Bluetooth technique on your project. First of all, you should initial object of BLEManager, it is a singleton object, then you can re-use in your program by the method of “sharedManager”. When you need to communicate with device, you should use the method of “scanningForServicesWithPeripheral“ to search all services and characters first. It is an important procedure before you want to send or receive data with device. If you do not use this method, it cannot correct to communicate with device. When the length of transmission data is too long, the write/read method may has long time to process.
 
 ## Installation
 
