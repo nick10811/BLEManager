@@ -84,8 +84,8 @@ NSString *currentCharacteristic = nil;
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
     NSLog(@"peripheral:%@",peripheral);
-    NSLog(@"advertisementData:%@",advertisementData);
-    NSLog(@"RSSI:%@",RSSI);
+//    NSLog(@"advertisementData:%@",advertisementData);
+//    NSLog(@"RSSI:%@",RSSI);
     
     if(peripheral.identifier == nil || RSSI.intValue < settedRSSI)
     {
@@ -97,7 +97,7 @@ NSString *currentCharacteristic = nil;
             
         if([peripheral.identifier.UUIDString isEqualToString:p.identifier.UUIDString]){
             [self.discoveredPeripherals replaceObjectAtIndex:i withObject:peripheral];
-            NSLog(@"Duplicate UUID found updating...");
+//            NSLog(@"Duplicate UUID found updating...");
             return;
         }
     }
@@ -111,12 +111,14 @@ NSString *currentCharacteristic = nil;
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     NSLog(@"didDisconnectPeripheral");
+    lockCallBack = CALLBACK_NONE;
+    writeResCode = [NSError errorWithDomain:@"" code:0 userInfo:@""];
     [self.delegate BLEManagerDisconnectPeripheral:peripheral error:error];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(nullable NSError *)error {
     for(CBService *service in peripheral.services){
-        NSLog(@"service.UUID:%@",service.UUID.UUIDString);
+//        NSLog(@"service.UUID:%@",service.UUID.UUIDString);
 //        if([currentService isEqualToString:service.UUID.UUIDString]){
 //            NSArray *arr = [[NSArray alloc] initWithObjects:[CBUUID UUIDWithString:currentCharacteristic], nil];
 //            [peripheral discoverCharacteristics:arr forService:service];
@@ -134,8 +136,9 @@ NSString *currentCharacteristic = nil;
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(nonnull CBCharacteristic *)characteristic error:(nullable NSError *)error {
-    NSLog(@"error(%d):%@", (int)error.code, [error localizedDescription]);
-    NSLog(@"data:%@", characteristic.value);
+    NSLog(@"didUpdateValueForCharacteristic");
+//    NSLog(@"error(%d):%@", (int)error.code, [error localizedDescription]);
+//    NSLog(@"data:%@", characteristic.value);
     
     switch (lockCallBack) {
         case CALLBACK_NONE:
@@ -157,7 +160,7 @@ NSString *currentCharacteristic = nil;
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error {
     NSLog(@"didWriteValueForCharacteristic");
-    NSLog(@"charUUID:%@, error:%@", characteristic.UUID.UUIDString, [error localizedDescription]);
+//    NSLog(@"charUUID:%@, error:%@", characteristic.UUID.UUIDString, [error localizedDescription]);
     writeResCode = error == nil ? [NSError errorWithDomain:@"" code:0 userInfo:@""] : error;
 }
 
@@ -257,7 +260,7 @@ NSString *currentCharacteristic = nil;
         [peripheral readRSSI];
         
         int returnRSSI = 0;
-        while(currentRSSI == 0){
+        while(currentRSSI == 0 && lockCallBack == CALLBACK_RSSI){
              [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
         lockCallBack = CALLBACK_NONE; // reset lockCallBack
@@ -341,7 +344,7 @@ NSString *currentCharacteristic = nil;
         [peripheral readValueForCharacteristic:characteristic];
         
         NSData *returnedData = nil;
-        while(currentData == nil){
+        while(currentData == nil && lockCallBack == CALLBACK_READ){
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
         }
         lockCallBack = CALLBACK_NONE; // reset lockCallBack
