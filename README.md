@@ -5,7 +5,8 @@ This is a library of Bluetooth 4.0 which based on iOS. It makes you easy to impl
 
 ## Installation
 
-copy Lib folder to your project
+* BLEManager is available through [CocoaPods](http://cocoapods.org).
+* You can also download the BLEManager.{m,h} files into your project directly.
 
 ## How to use
 
