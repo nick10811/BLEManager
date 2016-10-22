@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
-#define timeInverval 2.0f // timeount for scanning peripherals
+#define timeInverval 3.0f // timeount for scanning peripherals
 #define defaultRSSI -100 // signal of blue device for detecting
 
 @class BLEManager;
@@ -33,7 +33,7 @@
 
 @property (strong,nonatomic) NSMutableArray *discoveredPeripherals;
 
-@property (assign,nonatomic) id<BLEManagerDelegate> delegate;
+@property (weak,nonatomic) id<BLEManagerDelegate> delegate;
 
 + (BLEManager *)sharedManagerWithDelegate:(id<BLEManagerDelegate>)delegate; // inital
 + (BLEManager *)sharedManager; // singleton
@@ -52,5 +52,6 @@
 // after discovering services and characteristics
 - (NSError *)setValue:(NSData *) data forServiceUUID:(NSString *) serviceUUID andCharacteristicUUID:(NSString *) charUUID withPeripheral:(CBPeripheral *)peripheral;
 - (NSData *)readValueForServiceUUID:(NSString *) serviceUUID andCharacteristicUUID:(NSString *) charUUID withPeripheral:(CBPeripheral *)peripheral;
+- (void)setNotify:(BOOL) isNotify forServiceUUID:(NSString *) serviceUUID andCharacteristicUUID:(NSString *) charUUID withPeripheral:(CBPeripheral *)peripheral;
 
 @end

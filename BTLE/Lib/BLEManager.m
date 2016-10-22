@@ -142,18 +142,29 @@ NSString *currentCharacteristic = nil;
     
     switch (lockCallBack) {
         case CALLBACK_NONE:
+        {
             currentData = nil;
             currentService = nil;
             currentCharacteristic = nil;
             
-            [self.delegate BLEManagerReceiveData:characteristic.value fromPeripheral:peripheral andServiceUUID:characteristic.service.UUID.UUIDString andCharacteristicUUID:characteristic.UUID.UUIDString];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self.delegate BLEManagerReceiveData:characteristic.value fromPeripheral:peripheral andServiceUUID:characteristic.service.UUID.UUIDString andCharacteristicUUID:characteristic.UUID.UUIDString];
+            });
             break;
+        }
         case CALLBACK_SEND:
         case CALLBACK_READ:
+        {
             currentData = characteristic.value;
             break;
+        }
         default:
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self.delegate BLEManagerReceiveData:characteristic.value fromPeripheral:peripheral andServiceUUID:characteristic.service.UUID.UUIDString andCharacteristicUUID:characteristic.UUID.UUIDString];
+            });
             break;
+        }
     }
     
 }
@@ -306,7 +317,7 @@ NSString *currentCharacteristic = nil;
         }
         if((properties & CBCharacteristicPropertyNotify) == CBCharacteristicPropertyNotify){
             NSLog(@"CBCharacteristicPropertyNotify");
-            [peripheral setNotifyValue:YES forCharacteristic:characteristic];
+//            [peripheral setNotifyValue:YES forCharacteristic:characteristic];
         }
         if((properties & CBCharacteristicPropertyIndicate) == CBCharacteristicPropertyIndicate){
             NSLog(@"CBCharacteristicPropertyIndicate");
@@ -354,6 +365,21 @@ NSString *currentCharacteristic = nil;
         return returnedData;
     }
     return  nil;
+}
+
+- (void)setNotify:(BOOL) isNotify forServiceUUID:(NSString *) serviceUUID andCharacteristicUUID:(NSString *) charUUID withPeripheral:(CBPeripheral *)peripheral {
+    if(isConnecting){
+        peripheral.delegate = self;
+        CBCharacteristic *characteristic = [self findCharacteristicWithServiceUUID:serviceUUID andCharacteristicUUID:charUUID andPeripheral:peripheral];
+        NSLog(@"char.UUID:%@",characteristic.UUID.UUIDString);
+        
+        CBCharacteristicProperties properties = characteristic.properties;
+        if((properties & CBCharacteristicPropertyNotify) == CBCharacteristicPropertyNotify){
+            NSLog(@"CBCharacteristicPropertyNotify");
+            [peripheral setNotifyValue:isNotify forCharacteristic:characteristic];
+            lockCallBack = CALLBACK_NONE;
+        }
+    }
 }
 
 - (CBCharacteristic *)findCharacteristicWithServiceUUID:(NSString *) serviceUUID andCharacteristicUUID:(NSString *) charUUID andPeripheral:(CBPeripheral *)peripheral

@@ -181,6 +181,9 @@
 				TargetAttributes = {
 					949F2ABE1BA9A4DE00A8E713 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = KDFS53L46Q;
+						DevelopmentTeamName = "Nick Yang (Personal Team)";
+						ProvisioningStyle = Manual;
 					};
 					949F2AD71BA9A4DE00A8E713 = {
 						CreatedOnToolsVersion = 6.4;
@@ -368,6 +371,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
