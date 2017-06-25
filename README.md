@@ -11,68 +11,68 @@ This is a library of Bluetooth 4.0 which based on iOS. It makes you easy to impl
 ## How to use
 
 * Inital this object
-```ruby
+```objc
 + (BLEManager *)sharedManagerWithDelegate:(id<BLEManagerDelegate>)delegate;
 ```
 
 * Reuse object (singleton)
-```ruby
+```objc
 + (BLEManager *)sharedManager;
 ```
 
 * Kill object
-```ruby
+```objc
 - (void)disableBLEManager;
 ```
 
 * Check bluetooth  device is connected
-```ruby
+```objc
 - (BOOL)isConnecting;
 ```
 
 * Scan all devices
-```ruby
+```objc
 - (void)scanningForPeripherals;
 ```
 
 * Scan all devices by restricted distance
-```ruby
+```objc
 - (void)scanningForPeripheralsWithDistance:(int)RSSI;
 ```
 
 * Stop scan devices
-```ruby
+```objc
 - (void)stopScanningForPeripherals;
 ```
 
 * Connect specified device
-```ruby
+```objc
 - (void)connectingPeripheral:(CBPeripheral *)peripheral;
 ```
 
 * Disconnect specified device
-```ruby
+```objc
 - (void)disconnectPeripheral:(CBPeripheral *)peripheral;
 ```
 
 * Get Received Signal Strength Indicator(RSSI) by device
-```ruby
+```objc
 - (int)readRSSI:(CBPeripheral *)peripheral;
 ```
 
 * Scan all services in the device
-```ruby
+```objc
 - (void)scanningForServicesWithPeripheral:(CBPeripheral *)peripheral;
 ```
 
 ### Communicate with device after scanning all services
 * Write data to device
-```ruby
+```objc
 - (NSError *)setValue:(NSData *) data forServiceUUID:(NSString *) serviceUUID andCharacteristicUUID:(NSString *) charUUID withPeripheral:(CBPeripheral *)peripheral;
 ```
 
 * Read data from device
-```ruby
+```objc
 - (NSData *)readValueForServiceUUID:(NSString *) serviceUUID andCharacteristicUUID:(NSString *) charUUID withPeripheral:(CBPeripheral *)peripheral;
 ```
 
