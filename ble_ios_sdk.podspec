@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ble_ios_sdk"
-  s.version      = "1.0.0"
+  s.version      = "0.0.1"
   s.summary      = "Bluetooth 4.0 SDK"
 
   # This description is used to generate tags and improve search results.
@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
+                   'This is a interface of Bluetooth SDK'
                    DESC
 
   s.homepage     = "https://github.com/nick10811/BLEManager"
@@ -51,7 +52,7 @@ Pod::Spec.new do |s|
   #
 
   s.author    = "Nick Yang"
-  s.social_media_url   = "http://imjustaprogrammer.blogspot.com/"
+  s.social_media_url   = "https://nick10811.github.io/"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -74,7 +75,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/nick10811/BLEManager.git", :tag => "1.0.0" }
+  s.source       = { :git => "https://github.com/nick10811/BLEManager.git", :tag => s.version.to_s }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
